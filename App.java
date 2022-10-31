@@ -15,7 +15,7 @@ public class App {
         for (int i = 0; i < 3; i++) {
             Desktop desk = Desktop.getDesktop();
 
-            // now we enter our URL that we want to open in our default browser
+            //Opens the url for each item in array
             String x = inputs[i];
             desk.browse(new URI(x));
         }
