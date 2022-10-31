@@ -3,7 +3,7 @@ import java.net.URI;
 import java.util.Scanner;
 
 public class App {
-    public static void MyMethod(String input1, String input2, String input3, String input4)
+    public static void WebMethod(String input1, String input2, String input3, String input4)
         throws Exception {
         //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/?price-min="+input3+"&price-max="+input4;
@@ -37,7 +37,9 @@ public class App {
                 switch (UserLoopReference){
                     //Runs 
                     case "Y":{
+                        //Get user input for city
                         System.out.println("What is your city? (ex. Louisville): ");
+                        //If city is empty, ask city again (fixes problem where it skips city after looping)
                         city = null;
                         while (city == null){
                         city = input.nextLine();
@@ -45,18 +47,23 @@ public class App {
                         if (city == ""){
                             city = input.nextLine();
                         }
-
+                        
+                        //If user's city input is more than one word, replace space char with _ char
                         city = city.replaceAll(" ", "-");
 
+                        //Get user's state abbreviations 
                         System.out.print("What is your State? (Examples: NJ, KY, AZ): ");
                         state = input.next();
-    
+                        
+                        //Get user's desired minimum and maximum price value
                         System.out.println("What is your min and max value");
                         min = input.next();
                         max = input.next();
-    
-                        MyMethod(city, state, min, max);
+                        
+                        //Call Method that creates and opens the links
+                        WebMethod(city, state, min, max);
 
+                        //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
                         UserLoopReference = input.next();
                     }
