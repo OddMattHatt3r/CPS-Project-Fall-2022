@@ -5,11 +5,13 @@ import java.util.Scanner;
 public class App {
     public static void MyMethod(String input1, String input2, String input3, String input4)
         throws Exception {
+        //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/?price-min="+input3+"&price-max="+input4;
         String InputLink2 = "https://www.realtor.com/realestateandhomes-search/"+input1+"_"+input2+"/price-"+input3+"-"+input4;
         String InputLink3 = "https://www.trulia.com/for_sale/"+ input1.replaceAll("-", "_") +","+input2+"/" + input3 + "-" + input4 + "_price/";
         String[] inputs = {InputLink1, InputLink2, InputLink3};
-
+        
+        //Open new tab for each generated url
         for (int i = 0; i < 3; i++) {
             Desktop desk = Desktop.getDesktop();
 
@@ -20,22 +22,33 @@ public class App {
     }
     public static void main(String[] args)
         throws Exception {
-
+            //Define variables
             String city, state, min, max, UserLoopReference, UserLoopNo, UserLoopYes;  
             UserLoopReference = UserLoopYes = "Y";  
             UserLoopNo = "N";
             int DoesLoop = 1;
+            int TimeCount = 0;
             Scanner input = new Scanner(System.in);
 
+            //Keep looping until user says no
             while (DoesLoop == 1) {
 
+                //Run programs based off of user input (Y, N, or none)
                 switch (UserLoopReference){
+                    //Runs 
                     case "Y":{
-                        System.out.println("What is your city?");
+                        System.out.println("What is your city? (ex. Louisville): ");
+                        city = null;
+                        while (city == null){
                         city = input.nextLine();
+                        }
+                        if (city == ""){
+                            city = input.nextLine();
+                        }
+
                         city = city.replaceAll(" ", "-");
 
-                        System.out.println("What is your State? (Examples: NJ, KY, AZ): ");
+                        System.out.print("What is your State? (Examples: NJ, KY, AZ): ");
                         state = input.next();
     
                         System.out.println("What is your min and max value");
@@ -48,12 +61,14 @@ public class App {
                         UserLoopReference = input.next();
                     }
                     break;
+                    //Thank user for using program, then terminate loop
                     case "N": {
                         System.out.println("Thank you for using our program :)");
                         DoesLoop = 0;
                         UserLoopReference = "N";
                     }
                     break;
+                    //If user does not input "Y" or "N", state as invalid until user inputs Y or N (loop)
                     default:{
                         while (UserLoopReference != UserLoopYes || UserLoopReference != UserLoopNo ){
                         System.out.println("Please input a valid response");
@@ -64,9 +79,11 @@ public class App {
                         UserLoopReference = "Y";
                     }
                     break;
-                }
-
             
+                }
+                //Count up each time user searches
+                TimeCount = TimeCount++; 
+
         }
         input.close();
     }
