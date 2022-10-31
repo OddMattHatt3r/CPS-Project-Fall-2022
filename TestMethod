@@ -1,0 +1,30 @@
+import java.util.Scanner;
+public class TestMethod{
+    static void MyMethod(String x){
+        switch (x){
+            case "new jersey": String lstate = "NJ";
+            System.out.println(lstate); 
+            break;
+            case "kentucky": lstate = "KY";
+            System.out.println(lstate);
+            break;
+        }
+    }
+    public static void main(String[] args)
+    {
+        String state, location;
+        Scanner input = new Scanner(System.in);
+
+        //Get user location
+        System.out.print("What is your city? ");
+        location = input.nextLine();;
+
+        System.out.print("What is your State? ");
+        state = input.nextLine();
+
+        MyMethod(state);
+
+        input.close();
+
+    }
+}
