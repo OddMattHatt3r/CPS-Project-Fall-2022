@@ -1,9 +1,17 @@
 import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class App {
-    public static void WebMethod(String input1, String input2, String input3, String input4)
+    public static void WebMethod(String input1, String input2, Integer input3, Integer input4)
         throws Exception {
         //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/?price-min="+input3+"&price-max="+input4;
@@ -20,14 +28,47 @@ public class App {
             desk.browse(new URI(x));
         }
     }
+    public static void CitySummaryMethod(ArrayList<String> cities)
+        throws Exception{
+            try{
+                File myObj = new File("SearchSummary.txt");
+                if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists, information updated");
+            }
+    
+            Map<String, Long> counts =
+            cities.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+    
+            String x = counts.toString();
+            x = x.replaceAll(","," times, ");
+            String str = x.substring(1, x.length() - 1);
+            str = str.replaceAll("="," - ");
+            
+    
+            FileWriter myWriter = new FileWriter("SearchSummary.txt");
+                myWriter.write("Number of times each city was searched: " + str +" times");
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+
+    }
+    }
     public static void main(String[] args)
         throws Exception {
             //Define variables
-            String city, state, min, max, UserLoopReference, UserLoopNo, UserLoopYes;  
-            UserLoopReference = UserLoopYes = "Y";  
+            String city, state, UserLoopReference, UserLoopNo, UserLoopYes;  
+            int min, max;
+            UserLoopReference = UserLoopYes = "Y";
             UserLoopNo = "N";
-            int DoesLoop = 1;
-            int TimeCount = 0;
+            int DoesLoop = 1, TimeCount = 0;
+            ArrayList<String> cities = new ArrayList<String>();
+            ArrayList<String> states = new ArrayList<String>();
+            ArrayList<Integer> mins = new ArrayList<Integer>();
+            ArrayList<Integer> maxs = new ArrayList<Integer>();
             Scanner input = new Scanner(System.in);
 
             //Keep looping until user says no
@@ -38,7 +79,7 @@ public class App {
                     //Runs 
                     case "Y":{
                         //Get user input for city
-                        System.out.println("What is your city? (ex. Louisville): ");
+                        System.out.print("What is your city? (ex. Louisville): ");
                         //If city is empty, ask city again (fixes problem where it skips city after looping)
                         city = null;
                         while (city == null){
@@ -47,18 +88,25 @@ public class App {
                         if (city == ""){
                             city = input.nextLine();
                         }
-                        
+                        cities.add(city);
                         //If user's city input is more than one word, replace space char with _ char
                         city = city.replaceAll(" ", "-");
 
                         //Get user's state abbreviations 
                         System.out.print("What is your State? (Examples: NJ, KY, AZ): ");
                         state = input.next();
+                        state = state.toLowerCase();
+                        states.add(state);
                         
-                        //Get user's desired minimum and maximum price value
-                        System.out.println("What is your min and max value");
-                        min = input.next();
-                        max = input.next();
+                        //Get user's desired minimum price value
+                        System.out.println("What is your minimum price range? (ex. 3000000): ");
+                        min = input.nextInt();
+                        mins.add(min);
+
+                        //Get user's desired maximum price value
+                        System.out.println("What is your maximum price range? (ex. 5000000): ");
+                        max = input.nextInt();
+                        maxs.add(max);
                         
                         //Call Method that creates and opens the links
                         WebMethod(city, state, min, max);
@@ -89,9 +137,15 @@ public class App {
             
                 }
                 //Count up each time user searches
+
                 TimeCount = TimeCount++; 
 
-        }
+            }
         input.close();
+        System.out.println(cities);
+        System.out.println(states);
+        System.out.println(maxs);
+        System.out.println(mins);
+        CitySummaryMethod(cities);
     }
 }
