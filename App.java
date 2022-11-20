@@ -175,7 +175,6 @@ public class App {
 
             case "new jersey":{
                 state = "NJ";
-                System.out.println(state);
             } break;
 
             case "new mexico":{
