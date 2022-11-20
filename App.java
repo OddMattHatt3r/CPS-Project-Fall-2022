@@ -6,17 +6,15 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class App {
-    public static void WebMethod(String input1, String input2, Integer input3, Integer input4)
+    public static void WebMethod(String input1, String input2, Integer input3, Integer input4, Integer input5, Integer input6)
         throws Exception {
         //Generate each link using the given parameters
-        String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/?price-min="+input3+"&price-max="+input4;
-        String InputLink2 = "https://www.realtor.com/realestateandhomes-search/"+input1+"_"+input2+"/price-"+input3+"-"+input4;
-        String InputLink3 = "https://www.trulia.com/for_sale/"+ input1.replaceAll("-", "_") +","+input2+"/" + input3 + "-" + input4 + "_price/";
+        String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+input6+"&price-min="+input3+"&price-max="+input4;
+        String InputLink2 = "https://www.realtor.com/realestateandhomes-search/"+input1+"_"+input2+"/beds-"+input5+"/baths-"+input6+"/price-"+input3+"-"+input4;
+        String InputLink3 = "https://www.trulia.com/for_sale/"+ input1.replaceAll("-", "_") +","+input2+"/" +input5+"p_beds/"+input6+"p_baths/"+input3+"-" +input4+"_price/";
         String[] inputs = {InputLink1, InputLink2, InputLink3};
         
         //Open new tab for each generated url
@@ -45,7 +43,6 @@ public class App {
             x = x.replaceAll(","," times, ");
             String str = x.substring(1, x.length() - 1);
             str = str.replaceAll("="," - ");
-            
     
             FileWriter myWriter = new FileWriter("SearchSummary.txt");
                 myWriter.write("Number of times each city was searched: " + str +" times");
@@ -54,14 +51,220 @@ public class App {
             } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-
+            }
     }
+    public static void MassMethods(){}
+    public static String ConvertState(String state){
+        //Replaces state name with abbreviation
+        switch(state){
+            case "alabama":{
+                state = "AL";
+            } break;
+
+            case "alaska":{
+                state = "AK";
+            } break;
+
+            case "arizona":{
+                state = "AZ";
+            } break;
+
+            case "arkansas":{
+                state = "AR";
+            } break;
+
+            case "california":{
+                state = "CA";
+            } break;
+
+            case "colorado":{
+                state = "CO";
+            } break;
+
+            case "connecticut":{
+                state = "CT";
+            } break;
+
+            case "delaware":{
+                state = "DE";
+            } break;
+
+            case "florida":{
+                state = "FL";
+            } break;
+
+            case "georgia":{
+                state = "GA";
+            } break;
+
+            case "hawaii":{
+                state = "HI";
+            } break;
+
+            case "idaho":{
+                state = "ID";
+            } break;
+
+            case "illinois":{
+                state = "IL";
+            } break;
+
+            case "indiana":{
+                state = "IN";
+            } break;
+                            
+            case "iowa":{
+                state = "IA";
+            } break;
+
+            case "kansas":{
+                state = "KS";
+            } break;
+
+            case "kentucky":{
+                state = "KY";
+            } break;
+
+            case "louisiana":{
+                state = "LA";
+            } break;
+
+            case "maine":{
+                state = "ME";
+            } break;
+
+            case "maryland":{
+                state = "MD";
+            } break;
+
+            case "massachusetts":{
+                state = "MA";
+            } break;
+
+            case "michigan":{
+                state = "MI";
+            } break;
+
+            case "minnesota":{
+                state = "MN";
+            } break;
+
+            case "mississippi":{
+                state = "MS";
+            } break;
+
+            case "missouri":{
+                state = "MO";
+            } break;
+
+            case "montana":{
+                state = "MT";
+            } break;
+
+            case "nebraska":{
+                state = "NE";
+            } break;
+
+            case "nevada":{
+                state = "NV";
+            } break;
+
+            case "new hampshire":{
+                state = "NH";
+            } break;
+
+            case "new jersey":{
+                state = "NJ";
+                System.out.println(state);
+            } break;
+
+            case "new mexico":{
+                state = "NM";
+            } break;
+
+            case "new york":{
+                state = "NY";
+            } break;
+
+            case "north carolina":{
+                state = "NC";
+            } break;
+
+            case "north dakota":{
+                state = "ND";
+            } break;
+
+            case "ohio":{
+                state = "OH";
+            } break;
+
+            case "oklahoma":{
+                state = "OK";
+            } break;
+
+            case "oregon":{
+                state = "OR";
+            } break;
+
+            case "pennsylvania":{
+                state = "PA";
+            } break;
+
+            case "rhode island":{
+                state = "RI";
+            } break;
+
+            case "south carolina":{
+                state = "SC";
+            } break;
+
+            case "south dakota":{
+                state = "SD";
+            } break;
+
+            case "tennessee":{
+                state = "TN";
+            } break;
+
+            case "texas":{
+                state = "TX";
+            } break;
+
+            case "utah":{
+                state = "UT";
+            } break;
+
+            case "vermont":{
+                state = "VT";
+            } break;
+
+            case "virginia":{
+                state = "VA";
+            } break;
+
+            case "washington":{
+                state = "WA";
+            } break;
+
+            case "west virginia":{
+                state = "WV";
+            } break;
+
+            case "wisconsin":{
+                state = "WI";
+            } break;
+
+            case "wyoming":{
+                state = "WY";
+            }
+        }
+        return state;
     }
     public static void main(String[] args)
         throws Exception {
             //Define variables
             String city, state, UserLoopReference, UserLoopNo, UserLoopYes;  
-            int min, max;
+            int min, max, bed, bath;
             UserLoopReference = UserLoopYes = "Y";
             UserLoopNo = "N";
             int DoesLoop = 1, TimeCount = 0;
@@ -69,6 +272,8 @@ public class App {
             ArrayList<String> states = new ArrayList<String>();
             ArrayList<Integer> mins = new ArrayList<Integer>();
             ArrayList<Integer> maxs = new ArrayList<Integer>();
+            ArrayList<Integer> beds = new ArrayList<Integer>();
+            ArrayList<Integer> baths = new ArrayList<Integer>();
             Scanner input = new Scanner(System.in);
 
             //Keep looping until user says no
@@ -94,8 +299,15 @@ public class App {
 
                         //Get user's state abbreviations 
                         System.out.print("What is your State? (Examples: NJ, KY, AZ): ");
-                        state = input.next();
+                        state = null;
+                        while (state == null){
+                        state = input.nextLine();
+                        }
+                        if (state == ""){
+                            state = input.nextLine();
+                        }
                         state = state.toLowerCase();
+                        state = (ConvertState(state)).toLowerCase();
                         states.add(state);
                         
                         //Get user's desired minimum price value
@@ -108,8 +320,27 @@ public class App {
                         max = input.nextInt();
                         maxs.add(max);
                         
+                        //Get user input for minimum number of bedrooms
+                        System.out.println("What is your desired number of bedrooms? (ex. 3): ");
+                        bed = input.nextInt();
+                        //not sure bout this
+                        if(bed > 5){
+                            bed = 5;
+                        }
+                        beds.add(bed);
+
+                        //Get user input for minimum number of baths
+                        System.out.println("What is your desired number of baths? (ex. 2): ");
+                        bath = input.nextInt();
+                        
+                        //not sure bout this
+                        if(bath > 5){
+                            bath = 5;
+                        }
+                        baths.add(bath);
+
                         //Call Method that creates and opens the links
-                        WebMethod(city, state, min, max);
+                        WebMethod(city, state, min, max, bed, bath);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
@@ -130,8 +361,15 @@ public class App {
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
                         UserLoopReference = input.next();
                         }
-                        DoesLoop = 1;
-                        UserLoopReference = "Y";
+                        if (UserLoopReference == "Y"){
+                            DoesLoop = 1;
+                            UserLoopReference = "Y";
+                        }
+                        else {
+                            System.out.println("Thank you for using our program :)");
+                            DoesLoop = 0;
+                            UserLoopReference = "N";
+                        }
                     }
                     break;
             
