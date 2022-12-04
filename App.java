@@ -395,7 +395,7 @@ public class App {
                         baths.add(bath);
 
                         //Call Method that creates and opens the links
-                        //WebGenMethod(city, state, min, max, bed, bath);
+                        WebGenMethod(city, state, min, max, bed, bath);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
