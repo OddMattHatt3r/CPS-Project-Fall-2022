@@ -9,7 +9,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class App {
-    public static void WebGenMethod(String input1, String input2, Integer input3, Integer input4, Integer input5, Integer input6)
+    public static void WebGenMethod
+        (String input1, String input2, Integer input3, Integer input4, Integer input5, Integer input6)
         throws Exception {
         //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+input6+"&price-min="+input3+"&price-max="+input4;
@@ -41,7 +42,7 @@ public class App {
             cities.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
     
             String x = counts.toString();
-            x = x.replaceAll(","," times, ");
+            x = x.replaceAll(","," times\n");
             String cityStr = x.substring(1, x.length() - 1);
             cityStr = cityStr.replaceAll("="," - ");
 
@@ -50,8 +51,8 @@ public class App {
             states.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
     
             String y = counts2.toString();
-            y = y.replaceAll(","," times, ");
-            String stateStr = x.substring(1, x.length() - 1);
+            y = y.replaceAll(","," times\n");
+            String stateStr = y.substring(1, y.length() - 1);
             stateStr = stateStr.replaceAll("="," - ");
 
             //Min prices
@@ -76,7 +77,7 @@ public class App {
             for (int i = 0; i < bedLeng; i++){
                 totalBeds = totalBeds + beds.get(i);
             }
-            float avgBed = totalBeds/bedLeng;
+            float avgBed = Math.round(totalBeds/bedLeng);
 
             //Find average number of beds
             int totalBaths = 0;
@@ -84,17 +85,23 @@ public class App {
             for (int i = 0; i < bathLeng; i++){
                 totalBaths = totalBaths + baths.get(i);
             }
-            float avgBaths = totalBaths/bathLeng;
+            int avgBaths = (int)(totalBaths/bathLeng);
             
             //Print results into text document
             FileWriter myWriter = new FileWriter("SearchSummary.txt");
-                myWriter.write("The program was run: " + timeCount +" times");
-                myWriter.write("Number of times each state was searched: " + stateStr +" times");
-                myWriter.write("\nNumber of times each city was searched: " + cityStr +" times");
-                myWriter.write("\nThe average maximum price was: $" + avgMax);
-                myWriter.write("\nThe average minimum price was: $" + avgMin);
-                myWriter.write("\nThe average number of beds was: $" + avgBed);
-                myWriter.write("\nThe average number of baths was: $" + avgBaths);
+                myWriter.write("The program was run " + (timeCount) +" times\n");
+                myWriter.write("\nNumber of times each state was searched");
+                myWriter.write("\n----------------------------------------\n ");
+                myWriter.write(stateStr +" times");
+                myWriter.write("\n\nNumber of times each city was searched");
+                myWriter.write("\n----------------------------------------\n ");
+                myWriter.write(cityStr +" times\n");
+                myWriter.write("\nAverages");
+                myWriter.write("\n----------------------------------------");
+                myWriter.write("\n The average maximum price was: $" + avgMax);
+                myWriter.write("\n The average minimum price was: $" + avgMin);
+                myWriter.write("\n The average number of beds was: " + avgBed);
+                myWriter.write("\n The average number of baths was: " + avgBaths);
                 myWriter.close();
                 System.out.println("Successfully wrote to the file.");
             } catch (IOException e) {
@@ -314,7 +321,7 @@ public class App {
             int min, max, bed, bath;
             UserLoopReference = UserLoopYes = "Y";
             UserLoopNo = "N";
-            int DoesLoop = 1, TimeCount = 0;
+            int DoesLoop = 1, TimeCount = -1;
             ArrayList<String> cities = new ArrayList<String>();
             ArrayList<String> states = new ArrayList<String>();
             ArrayList<Integer> mins = new ArrayList<Integer>();
@@ -340,6 +347,7 @@ public class App {
                         if (city == ""){
                             city = input.nextLine();
                         }
+                        city = city.substring(0,1).toUpperCase() + city.substring(1,city.length());
                         cities.add(city);
                         //If user's city input is more than one word, replace space char with _ char
                         city = city.replaceAll(" ", "-");
@@ -356,7 +364,7 @@ public class App {
                         state = state.toLowerCase();
                         state = (ConvertState(state)).toLowerCase();
                         states.add(state);
-                        
+
                         //Get user's desired minimum price value
                         System.out.println("What is your minimum price range? (ex. 3000000): ");
                         min = input.nextInt();
@@ -387,7 +395,7 @@ public class App {
                         baths.add(bath);
 
                         //Call Method that creates and opens the links
-                        WebGenMethod(city, state, min, max, bed, bath);
+                        //WebGenMethod(city, state, min, max, bed, bath);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
@@ -421,7 +429,6 @@ public class App {
                     break;
                 }
                 //Count up each time user searches
-
                 TimeCount++; 
 
             }
