@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class App {
-    public static void WebMethod(String input1, String input2, Integer input3, Integer input4, Integer input5, Integer input6)
+    public static void WebGenMethod(String input1, String input2, Integer input3, Integer input4, Integer input5, Integer input6)
         throws Exception {
         //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+input6+"&price-min="+input3+"&price-max="+input4;
@@ -26,7 +26,8 @@ public class App {
             desk.browse(new URI(x));
         }
     }
-    public static void CitySummaryMethod(ArrayList<String> cities)
+    public static void SummaryMethod
+    (ArrayList<String> cities, ArrayList<String> states,ArrayList<Integer> maxes,ArrayList<Integer> mins, int timeCount, ArrayList<Integer> beds, ArrayList<Integer> baths)
         throws Exception{
             try{
                 File myObj = new File("SearchSummary.txt");
@@ -35,17 +36,65 @@ public class App {
             } else {
                 System.out.println("File already exists, information updated");
             }
-    
+            //Print the cities
             Map<String, Long> counts =
             cities.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
     
             String x = counts.toString();
             x = x.replaceAll(","," times, ");
-            String str = x.substring(1, x.length() - 1);
-            str = str.replaceAll("="," - ");
+            String cityStr = x.substring(1, x.length() - 1);
+            cityStr = cityStr.replaceAll("="," - ");
+
+            //Print the states
+            Map<String, Long> counts2 =
+            states.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
     
+            String y = counts2.toString();
+            y = y.replaceAll(","," times, ");
+            String stateStr = x.substring(1, x.length() - 1);
+            stateStr = stateStr.replaceAll("="," - ");
+
+            //Min prices
+            int totalMax = 0;
+            int maxLeng = maxes.size();
+            for (int i = 0; i < maxLeng; i++){
+                totalMax = totalMax + maxes.get(i);
+            }
+            float avgMax = totalMax/maxLeng;
+
+            //Find average minimum prices
+            int totalMin = 0;
+            int minLeng = mins.size();
+            for (int i = 0; i < minLeng; i++){
+                totalMin = totalMin + mins.get(i);
+            }
+            float avgMin = totalMin/minLeng;
+
+            //Find average number of beds
+            int totalBeds = 0;
+            int bedLeng = beds.size();
+            for (int i = 0; i < bedLeng; i++){
+                totalBeds = totalBeds + beds.get(i);
+            }
+            float avgBed = totalBeds/bedLeng;
+
+            //Find average number of beds
+            int totalBaths = 0;
+            int bathLeng = baths.size();
+            for (int i = 0; i < bathLeng; i++){
+                totalBaths = totalBaths + baths.get(i);
+            }
+            float avgBaths = totalBaths/bathLeng;
+            
+            //Print results into text document
             FileWriter myWriter = new FileWriter("SearchSummary.txt");
-                myWriter.write("Number of times each city was searched: " + str +" times");
+                myWriter.write("The program was run: " + timeCount +" times");
+                myWriter.write("Number of times each state was searched: " + stateStr +" times");
+                myWriter.write("\nNumber of times each city was searched: " + cityStr +" times");
+                myWriter.write("\nThe average maximum price was: $" + avgMax);
+                myWriter.write("\nThe average minimum price was: $" + avgMin);
+                myWriter.write("\nThe average number of beds was: $" + avgBed);
+                myWriter.write("\nThe average number of baths was: $" + avgBaths);
                 myWriter.close();
                 System.out.println("Successfully wrote to the file.");
             } catch (IOException e) {
@@ -53,7 +102,6 @@ public class App {
             e.printStackTrace();
             }
     }
-    public static void MassMethods(){}
     public static String ConvertState(String state){
         //Replaces state name with abbreviation
         switch(state){
@@ -339,7 +387,7 @@ public class App {
                         baths.add(bath);
 
                         //Call Method that creates and opens the links
-                        WebMethod(city, state, min, max, bed, bath);
+                        WebGenMethod(city, state, min, max, bed, bath);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
@@ -371,11 +419,10 @@ public class App {
                         }
                     }
                     break;
-            
                 }
                 //Count up each time user searches
 
-                TimeCount = TimeCount++; 
+                TimeCount++; 
 
             }
         input.close();
@@ -383,6 +430,8 @@ public class App {
         System.out.println(states);
         System.out.println(maxs);
         System.out.println(mins);
-        CitySummaryMethod(cities);
+        System.out.println(beds);
+        System.out.println(baths);
+        SummaryMethod(cities,states,maxs,mins,TimeCount,beds, baths);
     }
 }
