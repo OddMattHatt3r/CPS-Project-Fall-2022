@@ -77,7 +77,7 @@ public class App {
             for (int i = 0; i < bedLeng; i++){
                 totalBeds = totalBeds + beds.get(i);
             }
-            float avgBed = Math.round(totalBeds/bedLeng);
+            float avgBed = Math.round((totalBeds/bedLeng)+.1);
 
             //Find average number of beds
             int totalBaths = 0;
@@ -85,7 +85,7 @@ public class App {
             for (int i = 0; i < bathLeng; i++){
                 totalBaths = totalBaths + baths.get(i);
             }
-            int avgBaths = (int)(totalBaths/bathLeng);
+            float avgBaths = (totalBaths/bathLeng);
             
             //Print results into text document
             FileWriter myWriter = new FileWriter("SearchSummary.txt");
@@ -98,8 +98,8 @@ public class App {
                 myWriter.write(cityStr +" times\n");
                 myWriter.write("\nAverages");
                 myWriter.write("\n----------------------------------------");
-                myWriter.write("\n The average maximum price was: $" + avgMax);
-                myWriter.write("\n The average minimum price was: $" + avgMin);
+                myWriter.write("\n The average maximum price was: $" + avgMax + "0");
+                myWriter.write("\n The average minimum price was: $" + avgMin + "0");
                 myWriter.write("\n The average number of beds was: " + avgBed);
                 myWriter.write("\n The average number of baths was: " + avgBaths);
                 myWriter.close();
