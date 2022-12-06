@@ -399,7 +399,7 @@ public class App {
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
-                        UserLoopReference = input.next();
+                        UserLoopReference = input.next().toUpperCase();
                     }
                     break;
                     //Thank user for using program, then terminate loop
