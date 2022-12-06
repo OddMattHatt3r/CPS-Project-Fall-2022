@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class App {
     public static void WebGenMethod
-        (String input1, String input2, Integer input3, Integer input4, Integer input5, Integer input6)
+        (String input1, String input2, Double input3, Double input4, Integer input5, Integer input6)
         throws Exception {
         //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+input6+"&price-min="+input3+"&price-max="+input4;
@@ -28,7 +28,7 @@ public class App {
         }
     }
     public static void SummaryMethod
-    (ArrayList<String> cities, ArrayList<String> states,ArrayList<Integer> maxes,ArrayList<Integer> mins, int timeCount, ArrayList<Integer> beds, ArrayList<Integer> baths)
+    (ArrayList<String> cities, ArrayList<String> states,ArrayList<Double> maxes,ArrayList<Double> mins, int timeCount, ArrayList<Integer> beds, ArrayList<Integer> baths)
         throws Exception{
             try{
                 File myObj = new File("SearchSummary.txt");
@@ -56,20 +56,22 @@ public class App {
             stateStr = stateStr.replaceAll("="," - ");
 
             //Min prices
-            int totalMax = 0;
+            Double totalMax = 0.0;
             int maxLeng = maxes.size();
             for (int i = 0; i < maxLeng; i++){
                 totalMax = totalMax + maxes.get(i);
             }
-            float avgMax = totalMax/maxLeng;
+            Double avgMax = totalMax/maxLeng;
+            String Maxvalue = String.format("%.1f", avgMax);
 
             //Find average minimum prices
-            int totalMin = 0;
+            Double totalMin = 0.0;
             int minLeng = mins.size();
             for (int i = 0; i < minLeng; i++){
                 totalMin = totalMin + mins.get(i);
             }
-            float avgMin = totalMin/minLeng;
+            Double avgMin = totalMin/minLeng;
+            String Minvalue = String.format("%.1f", avgMin);
 
             //Find average number of beds
             int totalBeds = 0;
@@ -98,8 +100,8 @@ public class App {
                 myWriter.write(cityStr +" times\n");
                 myWriter.write("\nAverages");
                 myWriter.write("\n----------------------------------------");
-                myWriter.write("\n The average maximum price was: $" + avgMax + "0");
-                myWriter.write("\n The average minimum price was: $" + avgMin + "0");
+                myWriter.write("\n The average maximum price was: $" + Maxvalue + "0");
+                myWriter.write("\n The average minimum price was: $" + Minvalue + "0");
                 myWriter.write("\n The average number of beds was: " + avgBed);
                 myWriter.write("\n The average number of baths was: " + avgBaths);
                 myWriter.close();
@@ -314,18 +316,46 @@ public class App {
         }
         return state;
     }
+    public static int StringInputCheckInt(String input){
+        int isntNumber = 0;
+        for (int i = 0; i < input.length();i++){
+            Character x = input.charAt(i);
+            if (x >= 48 && x<58){
+                isntNumber = isntNumber+ 0;
+            }
+            else if (x < 48 || x>=58){
+                isntNumber = isntNumber+ 1;
+            }
+        }
+        return isntNumber;
+    }
+    public static int StringInputCheckNoInt(String input){
+        int isntString = 0;
+        for (int i = 0; i < input.length();i++){
+            Character x = input.charAt(i);
+            if (x >= 97 && x<123){
+                isntString = isntString + 0;
+            }
+            else if (x < 97 || x>=123){
+                isntString = isntString+ 1;
+            }
+        }
+        return isntString;
+    }
+    
     public static void main(String[] args)
         throws Exception {
             //Define variables
-            String city, state, UserLoopReference, UserLoopNo, UserLoopYes;  
-            int min, max, bed, bath;
+            String city, state, UserLoopReference, UserLoopNo, UserLoopYes, minString, maxString, bedString, bathString;  
+            Double maxInt, minInt; 
+            int bedInt, bathInt;
             UserLoopReference = UserLoopYes = "Y";
             UserLoopNo = "N";
             int DoesLoop = 1, TimeCount = -1;
             ArrayList<String> cities = new ArrayList<String>();
             ArrayList<String> states = new ArrayList<String>();
-            ArrayList<Integer> mins = new ArrayList<Integer>();
-            ArrayList<Integer> maxs = new ArrayList<Integer>();
+            ArrayList<Double> mins = new ArrayList<Double>();
+            ArrayList<Double> maxs = new ArrayList<Double>();
             ArrayList<Integer> beds = new ArrayList<Integer>();
             ArrayList<Integer> baths = new ArrayList<Integer>();
             Scanner input = new Scanner(System.in);
@@ -347,6 +377,18 @@ public class App {
                         if (city == ""){
                             city = input.nextLine();
                         }
+                        //Make sure input is allowed
+                        String city2 = city.replaceAll(" ", "").toLowerCase();
+                        city2 = city2.toLowerCase();
+                        int isntString = StringInputCheckNoInt(city2);
+                        while (isntString >= 1){
+                            System.out.println("Please enter a valid city name");
+                            city = input.nextLine();
+                            city2 = city.replaceAll(" ", "").toLowerCase();
+                            isntString = StringInputCheckNoInt(city2);
+                        }
+
+                        //Properly capitalize city name
                         city = city.substring(0,1).toUpperCase() + city.substring(1,city.length());
                         cities.add(city);
                         //If user's city input is more than one word, replace space char with _ char
@@ -361,41 +403,98 @@ public class App {
                         if (state == ""){
                             state = input.nextLine();
                         }
+
+                        //Make sure input is only letters
                         state = state.toLowerCase();
+                        String state2 = state.replaceAll(" ", "").toLowerCase();
+                        isntString = StringInputCheckNoInt(state2);
+                        while (isntString >= 1){
+                            System.out.println("Please enter a valid state name");
+                            state = input.nextLine();
+                            state2 = state.replaceAll(" ", "").toLowerCase();
+                            isntString = StringInputCheckNoInt(state2);
+                        }
                         state = (ConvertState(state)).toUpperCase();
                         states.add(state);
 
                         //Get user's desired minimum price value
                         System.out.println("What is your minimum price range? (ex. 3000000): ");
-                        min = input.nextInt();
-                        mins.add(min);
+                        minString = null;
+                        while (minString == null){
+                        minString = input.nextLine();
+                        }
+                        if (minString == ""){
+                            minString = input.nextLine();
+                        }
+                        int isntNumber = StringInputCheckInt(minString);
+                        while (isntNumber >= 1){
+                            System.out.println("Please enter a valid price");
+                            minString = input.nextLine();
+                            isntNumber = StringInputCheckInt(minString);
+                        }
+                        minInt = Double.valueOf(minString);
+                        mins.add(minInt);
 
                         //Get user's desired maximum price value
                         System.out.println("What is your maximum price range? (ex. 5000000): ");
-                        max = input.nextInt();
-                        maxs.add(max);
+                        maxString = null;
+                        while (maxString == null){
+                        maxString = input.nextLine();
+                        }
+                        if (maxString == ""){
+                            maxString = input.nextLine();
+                        }
+                        isntNumber = StringInputCheckInt(maxString);
+                        while (isntNumber >= 1){
+                            System.out.println("Please enter a valid price");
+                            maxString = input.nextLine();
+                            isntNumber = StringInputCheckInt(maxString);
+                        }
+                        maxInt = Double.valueOf(maxString);
+                        maxs.add(maxInt);
                         
                         //Get user input for minimum number of bedrooms
                         System.out.println("What is your desired number of bedrooms? (ex. 3): ");
-                        bed = input.nextInt();
-                        //not sure bout this
-                        if(bed > 5){
-                            bed = 5;
+                        bedString = null;
+                        while (bedString == null){
+                        bedString = input.nextLine();
                         }
-                        beds.add(bed);
+                        if (bedString == ""){
+                            bedString = input.nextLine();
+                        }
+                        isntNumber = StringInputCheckInt(bedString);
+                        while (isntNumber >= 1){
+                            System.out.println("Please enter a valid number");
+                            bedString = input.nextLine();
+                            isntNumber = StringInputCheckInt(bedString);
+                        }
+                        bedInt = Integer.valueOf(bedString);
+
+                        //not sure bout this
+                        beds.add(bedInt);
 
                         //Get user input for minimum number of baths
                         System.out.println("What is your desired number of baths? (ex. 2): ");
-                        bath = input.nextInt();
-                        
-                        //not sure bout this
-                        if(bath > 5){
-                            bath = 5;
+                        bathString = null;
+                        while (bathString == null){
+                            bathString = input.nextLine();
                         }
-                        baths.add(bath);
+                        if (bathString == ""){
+                            bathString = input.nextLine();
+                        }
+                        isntNumber = StringInputCheckInt(bathString);
+                        while (isntNumber >= 1){
+                            System.out.println("Please enter a valid number");
+                            bathString = input.nextLine();
+                            isntNumber = StringInputCheckInt(bathString);
+                        }
+                        bathInt = Integer.valueOf(bathString);
+                        
+                        //Max number to 5 so it works with websites
+                        baths.add(bathInt);
 
                         //Call Method that creates and opens the links
-                        WebGenMethod(city, state, min, max, bed, bath);
+                        WebGenMethod(city, state, minInt, maxInt, bedInt, bathInt);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
@@ -433,12 +532,6 @@ public class App {
 
             }
         input.close();
-        System.out.println(cities);
-        System.out.println(states);
-        System.out.println(maxs);
-        System.out.println(mins);
-        System.out.println(beds);
-        System.out.println(baths);
         SummaryMethod(cities,states,maxs,mins,TimeCount,beds, baths);
     }
 }
