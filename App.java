@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class App {
     public static void WebGenMethod
-        (String input1, String input2, Double input3, Double input4, Integer input5, Integer input6)
+        (String input1, String input2, String input3, String input4, Integer input5, Integer input6)
         throws Exception {
         //Generate each link using the given parameters
         String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+input6+"&price-min="+input3+"&price-max="+input4;
@@ -494,7 +494,7 @@ public class App {
                         baths.add(bathInt);
 
                         //Call Method that creates and opens the links
-                        WebGenMethod(city, state, minInt, maxInt, bedInt, bathInt);
+                        WebGenMethod(city, state, maxString, maxString, bedInt, bathInt);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
