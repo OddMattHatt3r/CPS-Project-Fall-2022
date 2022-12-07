@@ -10,10 +10,13 @@ import java.util.stream.Collectors;
 
 public class App {
     public static void WebGenMethod
-        (String input1, String input2, String input3, String input4, Integer input5, Integer input6)
+        (String input1, String input2, String input3, String input4, Integer input5, Double input6)
         throws Exception {
+        //Round bath number, and use for homes.com, since it doesn't allow decimals
+        long y = Math.round(input6 + .1);
+
         //Generate each link using the given parameters
-        String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+input6+"&price-min="+input3+"&price-max="+input4;
+        String InputLink1 = "https://www.homes.com/"+input1+"-"+input2+"/"+input5+"-bedroom/"+"?bath="+y+"&price-min="+input3+"&price-max="+input4;
         String InputLink2 = "https://www.realtor.com/realestateandhomes-search/"+input1+"_"+input2+"/beds-"+input5+"/baths-"+input6+"/price-"+input3+"-"+input4;
         String InputLink3 = "https://www.trulia.com/for_sale/"+ input1.replaceAll("-", "_") +","+input2+"/" +input5+"p_beds/"+input6+"p_baths/"+input3+"-" +input4+"_price/";
         String[] inputs = {InputLink1, InputLink2, InputLink3};
@@ -28,7 +31,7 @@ public class App {
         }
     }
     public static void SummaryMethod
-    (ArrayList<String> cities, ArrayList<String> states,ArrayList<Double> maxes,ArrayList<Double> mins, int timeCount, ArrayList<Integer> beds, ArrayList<Integer> baths)
+    (ArrayList<String> cities, ArrayList<String> states,ArrayList<Double> maxes,ArrayList<Double> mins, int timeCount, ArrayList<Integer> beds, ArrayList<Double> baths)
         throws Exception{
             try{
                 File myObj = new File("SearchSummary.txt");
@@ -82,12 +85,12 @@ public class App {
             float avgBed = Math.round((totalBeds/bedLeng)+.1);
 
             //Find average number of beds
-            int totalBaths = 0;
+            Double totalBaths = 0.0;
             int bathLeng = baths.size();
             for (int i = 0; i < bathLeng; i++){
                 totalBaths = totalBaths + baths.get(i);
             }
-            float avgBaths = (totalBaths/bathLeng);
+            String avgBaths = String.format("%.1f", (totalBaths/bathLeng));
             
             //Print results into text document
             FileWriter myWriter = new FileWriter("SearchSummary.txt");
@@ -342,13 +345,13 @@ public class App {
         }
         return isntString;
     }
-    
+
     public static void main(String[] args)
         throws Exception {
             //Define variables
             String city, state, UserLoopReference, UserLoopNo, UserLoopYes, minString, maxString, bedString, bathString;  
-            Double maxInt, minInt; 
-            int bedInt, bathInt;
+            Double maxInt, minInt, bathInt; 
+            int bedInt;
             UserLoopReference = UserLoopYes = "Y";
             UserLoopNo = "N";
             int DoesLoop = 1, TimeCount = -1;
@@ -357,7 +360,7 @@ public class App {
             ArrayList<Double> mins = new ArrayList<Double>();
             ArrayList<Double> maxs = new ArrayList<Double>();
             ArrayList<Integer> beds = new ArrayList<Integer>();
-            ArrayList<Integer> baths = new ArrayList<Integer>();
+            ArrayList<Double> baths = new ArrayList<Double>();
             Scanner input = new Scanner(System.in);
 
             //Keep looping until user says no
@@ -482,19 +485,21 @@ public class App {
                         if (bathString == ""){
                             bathString = input.nextLine();
                         }
-                        isntNumber = StringInputCheckInt(bathString);
+                        String bathString2 = bathString.replaceAll(".","");
+                        isntNumber = StringInputCheckInt(bathString2);
                         while (isntNumber >= 1){
                             System.out.println("Please enter a valid number");
                             bathString = input.nextLine();
-                            isntNumber = StringInputCheckInt(bathString);
+                            bathString2 = bathString.replaceAll(".","");
+                            isntNumber = StringInputCheckInt(bathString2);
                         }
-                        bathInt = Integer.valueOf(bathString);
+                        bathInt = Double.valueOf(bathString);
                         
                         //Max number to 5 so it works with websites
                         baths.add(bathInt);
 
                         //Call Method that creates and opens the links
-                        WebGenMethod(city, state, maxString, maxString, bedInt, bathInt);
+                        WebGenMethod(city, state, minString, maxString, bedInt, bathInt);
 
                         //Ask user if they would like to search again
                         System.out.print("Would you like to search again? (Enter Y or N):  ");
