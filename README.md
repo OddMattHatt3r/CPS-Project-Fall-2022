@@ -25,14 +25,8 @@ HouseHunter is a Java application developed during my first semester of college 
 HouseHunter/
 │
 ├── src/
-│   └── com/househunter/
-│       ├── Main.java
-│       ├── HouseHunter.java
-│       └── URLGenerator.java
-│
-├── bin/
+│   └── com/BedBathApp/
+│       └── App.java
 │
 ├── README.md
-├── LICENSE
-└── .gitignore
 ```
