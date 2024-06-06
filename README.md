@@ -7,7 +7,7 @@ HouseHunter is a Java application developed during my first semester of college 
 ## Features
 
 - **User Input**: Collects user preferences including location, budget, number of bedrooms, and other essential criteria.
-- **Automated Search**: Generates URLs for three major house hunting websites (e.g., Zillow, Realtor, Trulia) based on user input.
+- **Automated Search**: Generates URLs for three major house hunting websites (e.g., Homes, Realtor, Trulia) based on user input.
 - **Efficiency**: Streamlines the initial stage of house hunting by providing targeted search results quickly.
 
 ## Technologies Used
@@ -17,7 +17,7 @@ HouseHunter is a Java application developed during my first semester of college 
 
 4. **Input Preferences**: Follow the prompts in the terminal to enter your desired location, budget, number of bedrooms, and any other specific criteria.
 
-5. **Get Results**: Receive direct links to house listings that match your preferences on Zillow, Realtor, and Trulia.
+5. **Get Results**: Receive direct links to house listings that match your preferences on Homes, Realtor, and Trulia.
 
 ## Repository Structure
 
